@@ -1,6 +1,12 @@
 # Set-UserAddressBookPolicy.ps1
 
-This script automates applying custom Address Book Polices to a select groups of users.  
+### DESCRIPTION
+This has been created to run on a schedule and apply the correct Address Book Policy.  
+
+*Set-UserAddressBookPolicy.ps1 
+                            [-SourceGroups <Array[ObjectID]>] 
+                            [-AddressBookPolicy <String[ABP Name]>] 
+                            [-IgnoreExisting <Switch>]*
 
 ```PowerShell
 <# 
