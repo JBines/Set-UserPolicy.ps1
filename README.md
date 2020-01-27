@@ -5,20 +5,18 @@ This script automates applying custom Address Book Polices to a select groups of
 ### DESCRIPTION
 This has been created to run on a schedule and apply the correct Address Book Policy.  
 
-**Set-UserAddressBookPolicy.ps1 
-                            [-SourceGroups <Array[ObjectID]>] 
-                            [-AddressBookPolicy <String[ABP Name]>] 
-                            [-IgnoreExisting <Switch>]**
+**Set-UserPolicy.ps1 [-SourceGroups <Array[ObjectID]>] [-AddressBookPolicy <String[ABP Name]>] [-MailboxRetentionPolicy <String[ABP Name]>] [-AddressBookPolicy <String[ABP Name]>] [-EnablePublicFolderClientAccess <Switch>]**
+
 
 ```PowerShell
 <# 
 .SYNOPSIS
-This script automates applying custom Address Book Polices to a select groups of users.  
+This script automates applying custom User Polices to a select groups of users.  
 
 .DESCRIPTION
 This has been created to run on a schedule and apply the correct Address Book Policy.  
 
-## Set-UserAddressBookPolicy.ps1 [-SourceGroups <Array[ObjectID]>] [-AddressBookPolicy <String[ABP Name]>] [-IgnoreExisting <Switch>] 
+## Set-UserPolicy.ps1 [-SourceGroups <Array[ObjectID]>] [-AddressBookPolicy <String[ABP Name]>] [-MailboxRetentionPolicy <String[ABP Name]>] [-AddressBookPolicy <String[ABP Name]>] [-EnablePublicFolderClientAccess <Switch>] 
 
 .PARAMETER SourceGroups
 The SourceGroup parameter details the ObjectId of the Azure Group which contains all the desired users that need the Address Book Policy.
@@ -26,8 +24,11 @@ The SourceGroup parameter details the ObjectId of the Azure Group which contains
 .PARAMETER AddressBookPolicy
 The AddressBookPolicy parameter specifies the name of the Address Book Policy which should be applied. 
 
-.PARAMETER IgnoreExisting
-The IgnoreExisting switch will allow the script to Ignore Users who already have any Address Book Policy Enabled. This means that the script will only be applied to users who do not have a ABP enabled. This switch can greatly improve processing time. 
+.PARAMETER EnablePublicFolderClientAccess
+The EnablePublicFolderClientAccess switch will enable the mailbox for Public Folder client access.
+
+.PARAMETER DisablePublicFolderClientAccess
+The DisablePublicFolderClientAccess switch will disable the mailbox for Public Folder client access.
 
 .PARAMETER DifferentialScope
 The DifferentialScope parameter defines how many objects can be added or removed from the UserGroups in a single operation of the script. The goal of this setting is throttle bulk changes to limit the impact of misconfiguration by an administrator. What value you choose here will be dictated by your userbase and your script schedule. The default value is set to 10 Objects. 
@@ -36,7 +37,7 @@ The DifferentialScope parameter defines how many objects can be added or removed
 The DifferentialScope parameter defines how many objects can be added or removed from the UserGroups in a single operation of the script. The goal of this setting is throttle bulk changes to limit the impact of misconfiguration by an administrator. What value you choose here will be dictated by your userbase and your script schedule. The default value is set to 10 Objects. 
 
 .EXAMPLE
-Set-UserAddressBookPolicy -SourceGroup '7b7c4926-c6d7-4ca8-9bbf-5965751022c2' -AddressBookPolicy 'Executive ABP' -IgnoreExisting
+Set-UserPolicy.ps1 -SourceGroup '7b7c4926-c6d7-4ca8-9bbf-5965751022c2' -AddressBookPolicy 'Executive ABP'
 
 -- SET MEMBERS FOR ROLE GROUPS --
 
@@ -63,6 +64,7 @@ Find me on:
   
 [VERSION HISTORY / UPDATES]
 0.0.1 20200121 - JBINES - Created the bare bones
+0.0.2 20200127 - JBINES - Added support for Enabling and Disabling Client Access to Public Folders
 
 [TO DO LIST / PRIORITY]
 
