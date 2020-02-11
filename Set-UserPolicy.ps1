@@ -52,8 +52,9 @@ Find me on:
 * Github:    https://github.com/jbines
   
 [VERSION HISTORY / UPDATES]
-0.0.1 20200121 - JBINES - Created the bare bones
-0.0.2 20200127 - JBINES - Added support for Enabling and Disabling Client Access to Public Folders
+0.0.1 20200121 - JBINES - Created the bare bones.
+0.0.2 20200127 - JBINES - Added support for Enabling and Disabling Client Access to Public Folders.
+0.0.3 20200127 - JBINES - Changed Switch to boolean for Azure Automation Best Practices.
 
 [TO DO LIST / PRIORITY]
 
@@ -71,12 +72,12 @@ Param
     [ValidateNotNullOrEmpty()]
     [Int]$DifferentialScope = 10,
     [Parameter(Mandatory = $False)]
+    [boolean]$EnablePublicFolderClientAccess=$False,
+    [Parameter(Mandatory = $False)]
+    [boolean]$DisablePublicFolderClientAccess=$False,
+    [Parameter(Mandatory = $False)]
     [ValidateNotNullOrEmpty()]
-    [String]$AutomationPSCredential,
-    [Parameter(Mandatory = $False)]
-    [Switch]$EnablePublicFolderClientAccess=$False,
-    [Parameter(Mandatory = $False)]
-    [Switch]$DisablePublicFolderClientAccess=$False
+    [String]$AutomationPSCredential
 )
 
     #Set VAR
