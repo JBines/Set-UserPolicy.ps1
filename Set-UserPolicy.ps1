@@ -55,6 +55,7 @@ Find me on:
 0.0.1 20200121 - JBINES - Created the bare bones.
 0.0.2 20200127 - JBINES - Added support for Enabling and Disabling Client Access to Public Folders.
 0.0.3 20200127 - JBINES - Changed Switch to boolean for Azure Automation Best Practices.
+0.0.4 2020702 - JBINES - BUG FIX: Missing expanding all members of the group. LINE 149 Get-AzureADGroupMember -ObjectId $_ -All
 
 [TO DO LIST / PRIORITY]
 
@@ -146,7 +147,7 @@ Param
 
             }
                             
-        $objSourceGroupMembers = @($SourceGroups | ForEach-Object {Get-AzureADGroupMember -ObjectId $_})
+        $objSourceGroupMembers = @($SourceGroups | ForEach-Object {Get-AzureADGroupMember -ObjectId $_ -All:$true})
 
         #Return Only Unique values remove any duplicates
         $SourceGroupMembers = $objSourceGroupMembers | Select-Object -Unique
