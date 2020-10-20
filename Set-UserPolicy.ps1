@@ -55,7 +55,9 @@ Find me on:
 0.0.1 20200121 - JBINES - Created the bare bones.
 0.0.2 20200127 - JBINES - Added support for Enabling and Disabling Client Access to Public Folders.
 0.0.3 20200127 - JBINES - Changed Switch to boolean for Azure Automation Best Practices.
-0.0.4 2020702 - JBINES - BUG FIX: Missing expanding all members of the group. LINE 149 Get-AzureADGroupMember -ObjectId $_ -All
+0.0.4 20200702 - JBINES - BUG FIX: Missing expanding all members of the group. LINE 149 Get-AzureADGroupMember -ObjectId $_ -All
+0.0.5 20201020 - JBINES - [Feature] Added option for a ExcludeGroup. Ran into a issue for Send-AS permissions for mailboxes outside the scope of the ABP. 
+
 
 [TO DO LIST / PRIORITY]
 
@@ -69,6 +71,9 @@ Param
     [Parameter(Mandatory = $True)]
     [ValidateNotNullOrEmpty()]
     [string]$AddressBookPolicy,
+    [Parameter(Mandatory = $False)]
+    [ValidateNotNullOrEmpty()]
+    [string]$ExcludeGroup,
     [Parameter(Mandatory = $False)]
     [ValidateNotNullOrEmpty()]
     [Int]$DifferentialScope = 10,
@@ -89,6 +94,8 @@ Param
 
     # Info Strings
     $iString0 = "Set Address Book Policy"
+    $iString1 = "Source Group Members - Count: "
+    $iString2 = "Source Group Without Excluded Members - Final Count: "
 
 # Warn Strings
     $wString0 = "CMDlet:Measure-Object;No Members"
@@ -146,11 +153,18 @@ Param
             Import-Module (Import-PSSession -Session $ExchangeOnlineSession -AllowClobber -DisableNameChecking) -Global
 
             }
-                            
-        $objSourceGroupMembers = @($SourceGroups | ForEach-Object {Get-AzureADGroupMember -ObjectId $_ -All:$true})
 
-        #Return Only Unique values remove any duplicates
-        $SourceGroupMembers = $objSourceGroupMembers | Select-Object -Unique
+        #Pull Members of source groups and add a MemberOf attribute
+        $objSourceGroupMembers = @($SourceGroups | ForEach-Object {Get-AzureADGroupMember -ObjectId $_ -All:$True | Select-Object MailNickName,ObjectId,UserPrincipalName, @{Expression={(Get-AzureADUserMembership -ObjectId  $_.ObjectId).ObjectId};Label="MemberOf"}})
+        $objSourceGroupMembersCount = ($objSourceGroupMembers | Measure-Object).Count
+
+        Write-Log -Message "$iString1 $objSourceGroupMembersCount" -LogLevel INFO -ConsoleOutput
+        
+        #Strip Array of Any members in the exclude group 
+        $SourceGroupMembers = $objSourceGroupMembers | Where-Object{-not($_.MemberOf -contains $ExcludeGroup)}
+        $SourceGroupMembersCount = ($SourceGroupMembers | Measure-Object).Count
+        
+        Write-Log -Message "$iString2 $SourceGroupMembersCount" -LogLevel INFO -ConsoleOutput
         
         #Confirm Address Book Policy and obtain the DN. 
         $objAddressBookPolicy = Get-AddressBookPolicy $AddressBookPolicy
