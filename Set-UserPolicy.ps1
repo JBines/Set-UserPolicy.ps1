@@ -5,7 +5,7 @@ This script automates applying custom User Polices to a select groups of users.
 .DESCRIPTION
 This has been created to run on a schedule and apply the correct Address Book Policy.  
 
-## Set-UserPolicy.ps1 [-SourceGroups <Array[ObjectID]>] [-AddressBookPolicy <String[ABP Name]>] [-MailboxRetentionPolicy <String[ABP Name]>] [-AddressBookPolicy <String[ABP Name]>] [-EnablePublicFolderClientAccess <Switch>] 
+## Set-UserPolicy.ps1 [-SourceGroups <Array[ObjectID]>] [-ExcludeGroup <String[ObjectID]>] [-AddressBookPolicy <String[ABP Name]>] [-MailboxRetentionPolicy <String[ABP Name]>] [-AddressBookPolicy <String[ABP Name]>] [-EnablePublicFolderClientAccess <Switch>] 
 
 .PARAMETER SourceGroups
 The SourceGroup parameter details the ObjectId of the Azure Group which contains all the desired users that need the Address Book Policy.
