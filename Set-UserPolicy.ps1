@@ -57,6 +57,7 @@ Find me on:
 0.0.3 20200127 - JBINES - Changed Switch to boolean for Azure Automation Best Practices.
 0.0.4 20200702 - JBINES - BUG FIX: Missing expanding all members of the group. LINE 149 Get-AzureADGroupMember -ObjectId $_ -All
 0.0.5 20201020 - JBINES - [Feature] Added option for a ExcludeGroup. Ran into a issue for Send-AS permissions for mailboxes outside the scope of the ABP. 
+0.0.6 20210420 - JBINES - BUG FIX: Failing without an $ExcludeGroup due to [ValidateNotNullOrEmpty()] removed from this VAR.
 
 
 [TO DO LIST / PRIORITY]
@@ -72,7 +73,6 @@ Param
     [ValidateNotNullOrEmpty()]
     [string]$AddressBookPolicy,
     [Parameter(Mandatory = $False)]
-    [ValidateNotNullOrEmpty()]
     [string]$ExcludeGroup,
     [Parameter(Mandatory = $False)]
     [ValidateNotNullOrEmpty()]
